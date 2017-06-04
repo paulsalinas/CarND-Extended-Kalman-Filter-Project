@@ -88,7 +88,12 @@ VectorXd KalmanFilter::h(const VectorXd &x) {
   
   z_pred(0) = sqrt(px * px + py * py);
   z_pred(1) = atan2(py, px);
-  z_pred(2) = (px * vx + py + vy) / z_pred(0);
+  
+  if (fabs(z_pred(0)) < 0.0001) {
+    z_pred(2) = 0;
+  } else {
+    z_pred(2) = (px * vx + py * vy) / z_pred(0);
+  }
   
   return z_pred;
 }
